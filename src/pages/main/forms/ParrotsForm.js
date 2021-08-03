@@ -3,7 +3,7 @@ import Button from "@material-ui/core/Button";
 
 import validationSchema from "../validation/ParrotsFormValidation";
 import CustomInputComponent from "../../../components/CustomInputComponent";
-import Form from "./components/FormWrapper";
+import Form from "../../../components/FormWrapper";
 
 const initialValues = {
   name: "",

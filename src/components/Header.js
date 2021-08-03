@@ -1,17 +1,3 @@
-<<<<<<< HEAD
-import { makeStyles } from "@material-ui/core/styles";
-
-const useStyles = makeStyles(() => ({
-  greet: {
-    padding: "1.2rem 0",
-    display: "flex",
-    justifyContent: "center",
-    font: "bolder 2.2rem Arial, sans-serif",
-    backgroundColor: "#466D1D",
-    color: "white",
-    "& > *": {
-      "max-width": "50rem",
-=======
 import { NavLink } from "react-router-dom";
 
 import { makeStyles } from "@material-ui/core/styles";
@@ -24,6 +10,8 @@ const useStyles = makeStyles(() => ({
     color: "white",
   },
   nav: {
+    maxWidth: "60%",
+    margin: "0 auto 0",
     "& ul": {
       width: "100%",
       display: "flex",
@@ -42,18 +30,12 @@ const useStyles = makeStyles(() => ({
     "& a:active, a.active, a:hover": {
       textDecoration: "none",
       color: "lightgreen",
->>>>>>> Added routing.
     },
   },
 }));
 
 export default function Header() {
   const classes = useStyles();
-<<<<<<< HEAD
-  let greet = <div>Choose the one form you'd like to work with!</div>;
-
-  return <div className={classes.greet}>{greet}</div>;
-=======
 
   return (
     <header className={classes.header}>
@@ -65,9 +47,11 @@ export default function Header() {
           <li>
             <NavLink to="/info">Info</NavLink>
           </li>
+          <li>
+            <NavLink to="/login">Login</NavLink>
+          </li>
         </ul>
       </nav>
     </header>
   );
->>>>>>> Added routing.
 }
