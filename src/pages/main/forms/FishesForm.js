@@ -2,7 +2,7 @@ import { useFormik } from "formik";
 import Button from "@material-ui/core/Button";
 
 import validationSchema from "../validation/FishesFormValidation";
-import CustomInputComponent from "./components/CustomInputComponent";
+import CustomInputComponent from "../../../components/CustomInputComponent";
 import Form from "./components/FormWrapper";
 
 const initialValues = {

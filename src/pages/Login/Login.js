@@ -1,21 +1,21 @@
 import { useFormik } from "formik";
 import Button from "@material-ui/core/Button";
 
-import validationSchema from "../validation/DogsFormValidation";
-import CustomInputComponent from "../../../components/CustomInputComponent";
+import validationSchema from "../validation/CatsFormValidation";
+import CustomInputComponent from "./components/CustomInputComponent";
 import Form from "./components/FormWrapper";
 
 const initialValues = {
   name: "",
   breed: "",
-  age: "",
+  weight: "",
 };
 
 function onSubmit(values) {
   alert(JSON.stringify(values));
 }
 
-export default function DogsForm() {
+export default function Login() {
   const formik = useFormik({
     initialValues,
     validationSchema,
@@ -25,7 +25,7 @@ export default function DogsForm() {
   return (
     <Form onSubmit={formik.handleSubmit}>
       <CustomInputComponent
-        label="Name of your dog is..."
+        label="Email"
         id="name"
         name="name"
         error={formik.touched.name && formik.errors.name}
@@ -34,7 +34,7 @@ export default function DogsForm() {
       />
 
       <CustomInputComponent
-        label="It's breed is..."
+        label="Password"
         id="breed"
         name="breed"
         error={formik.touched.breed && formik.errors.breed}
@@ -42,18 +42,8 @@ export default function DogsForm() {
         {...formik.getFieldProps("breed")}
       />
 
-      <CustomInputComponent
-        label="What is your dog's age?"
-        type="number"
-        id="age"
-        name="age"
-        error={formik.touched.age && formik.errors.age}
-        helperText={formik.touched.age && formik.errors.age}
-        {...formik.getFieldProps("age")}
-      />
-
       <Button color="primary" variant="contained" type="submit">
-        Submit
+        Login/Register
       </Button>
     </Form>
   );

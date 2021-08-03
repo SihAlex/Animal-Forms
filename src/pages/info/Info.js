@@ -2,7 +2,7 @@ import { makeStyles } from "@material-ui/core/styles";
 
 import { useContext } from "react";
 
-import { CovidStatsContext } from "../../components/store/covid-stasts-context";
+import { CovidStatsContext } from "../../store/covid-stasts-context";
 
 const useStyles = makeStyles(() => ({
   footer: {

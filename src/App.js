@@ -1,7 +1,8 @@
 import Header from "./components/Header";
 import Main from "./pages/main/Main";
 import Info from "./pages/info/Info";
-import { CovidStatsContextProvider } from "./components/store/covid-stasts-context";
+import Login from "./pages/Login/Login";
+import { CovidStatsContextProvider } from "./store/covid-stasts-context";
 import { createTheme, ThemeProvider } from "@material-ui/core";
 
 import { Route, Switch, Redirect } from "react-router-dom";
@@ -34,6 +35,9 @@ function App() {
           </Route>
           <Route path="/info">
             <Info />
+          </Route>
+          <Route path="/login">
+            <Login />
           </Route>
           <Route path="*">
             <h1>Page not found</h1>
