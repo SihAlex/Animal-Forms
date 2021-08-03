@@ -11,10 +11,6 @@ const initialValues = {
   password: "",
 };
 
-function onSubmit(values) {
-  alert(JSON.stringify(values));
-}
-
 export default class Login extends Component {
   constructor(props) {
     super(props);
@@ -34,11 +30,69 @@ export default class Login extends Component {
       isSubmitting: false,
     };
   }
+
+  handleChange({ target }) {
+    const { formValues } = this.state;
+    formValues[target.name] = target.value;
+    this.setState({ formValues });
+    this.handleValidation(target);
+  }
+
+  handleValidation(target) {
+    const { name, value } = target;
+    const fieldValidationErrors = this.state.formErrors;
+    const validity = this.state.formValidity;
+    const isEmail = name === "email";
+    const isPassword = name === "password";
+    const emailTest = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
+    validity[name] = value.length > 0;
+    fieldValidationErrors[name] = validity[name]
+      ? ""
+      : `${name} is required and cannot be empty`;
+    if (validity[name]) {
+      if (isEmail) {
+        validity[name] = emailTest.test(value);
+        fieldValidationErrors[name] = validity[name]
+          ? ""
+          : `${name} should be a valid email address`;
+      }
+      if (isPassword) {
+        validity[name] = value.length >= 3;
+        fieldValidationErrors[name] = validity[name]
+          ? ""
+          : `${name} should be 3 characters minimum`;
+      }
+    }
+    this.setState({
+      formErrors: fieldValidationErrors,
+      formValidity: validity,
+    });
+  }
+
+  handleSubmit(event) {
+    event.preventDefault();
+    this.setState({ isSubmitting: true });
+    const { formValues, formValidity } = this.state;
+    if (Object.values(formValidity).every(Boolean)) {
+      alert("Form is validated! Submitting the form...");
+      this.setState({ isSubmitting: false });
+    } else {
+      for (let key in formValues) {
+        let target = {
+          name: key,
+          value: formValues[key],
+        };
+        this.handleValidation(target);
+      }
+      this.setState({ isSubmitting: false });
+    }
+  }
+
   render() {
     const { formValues, formErrors, isSubmitting } = this.state;
     return (
       <Form>
-        <Box color="primary">
+        <Box marginTop="2rem" bgcolor="primary.main">
           <h2
             style={{ textAlign: "center", fontSize: "2.4rem", color: "white" }}
           >
@@ -46,10 +100,24 @@ export default class Login extends Component {
           </h2>
         </Box>
         <div>
-          <CustomInputComponent />
+          <CustomInputComponent
+            label="Email"
+            id="email"
+            name="email"
+            type="email"
+            onChange={this.handleChange}
+            value={formValues.email}
+          />
         </div>
         <div>
-          <CustomInputComponent />
+          <CustomInputComponent
+            label="Password"
+            id="password"
+            name="password"
+            type="password"
+            onChange={this.handleChange}
+            value={formValues.password}
+          />
         </div>
         <Button color="primary" variant="contained" type="submit">
           Login/Register

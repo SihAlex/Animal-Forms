@@ -5,14 +5,23 @@ import ParrotsForm from "./forms/ParrotsForm";
 
 import { useState } from "react";
 
-import Container from "@material-ui/core/Container";
 import { makeStyles } from "@material-ui/core/styles";
-import InputLabel from "@material-ui/core/InputLabel";
-import MenuItem from "@material-ui/core/MenuItem";
-import FormControl from "@material-ui/core/FormControl";
-import Select from "@material-ui/core/Select";
+import {
+  Box,
+  Select,
+  FormControl,
+  MenuItem,
+  InputLabel,
+  Container,
+} from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
+  pageText: {
+    textAlign: "center",
+    fontSize: "2.4rem",
+    color: "white",
+    padding: "2rem",
+  },
   container: {
     maxWidth: "40rem",
     padding: 0,
@@ -55,27 +64,32 @@ export default function Main() {
   }
 
   return (
-    <Container className={classes.container}>
-      <FormControl className={classes.formControl}>
-        <InputLabel id="form-select-label">Form</InputLabel>
-        <Select
-          labelId="form-select-label"
-          id="selectForm"
-          name="selectForm"
-          onChange={handleNameChange}
-        >
-          <MenuItem value="">
-            <em>None</em>
-          </MenuItem>
-          <MenuItem value="cats" onChange={handleNameChange}>
-            Cats
-          </MenuItem>
-          <MenuItem value="dogs">Dogs</MenuItem>
-          <MenuItem value="fishes">Fishes</MenuItem>
-          <MenuItem value="parrots">Parrots</MenuItem>
-        </Select>
-      </FormControl>
-      {getChosenForm(form)}
-    </Container>
+    <>
+      <Box marginTop="2rem" bgcolor="primary.main">
+        <h2 className={classes.pageText}>Choose one form:</h2>
+      </Box>
+      <Container className={classes.container}>
+        <FormControl className={classes.formControl}>
+          <InputLabel id="form-select-label">Form</InputLabel>
+          <Select
+            labelId="form-select-label"
+            id="selectForm"
+            name="selectForm"
+            onChange={handleNameChange}
+          >
+            <MenuItem value="">
+              <em>None</em>
+            </MenuItem>
+            <MenuItem value="cats" onChange={handleNameChange}>
+              Cats
+            </MenuItem>
+            <MenuItem value="dogs">Dogs</MenuItem>
+            <MenuItem value="fishes">Fishes</MenuItem>
+            <MenuItem value="parrots">Parrots</MenuItem>
+          </Select>
+        </FormControl>
+        {getChosenForm(form)}
+      </Container>
+    </>
   );
 }
