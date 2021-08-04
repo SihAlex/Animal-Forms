@@ -1,15 +1,9 @@
 import { Component } from "react";
 
-import { useFormik } from "formik";
 import { Button, Box } from "@material-ui/core";
 
 import CustomInputComponent from "../../components/CustomInputComponent";
 import Form from "../../components/FormWrapper";
-
-const initialValues = {
-  email: "",
-  password: "",
-};
 
 export default class Login extends Component {
   constructor(props) {
@@ -44,7 +38,7 @@ export default class Login extends Component {
     const validity = this.state.formValidity;
     const isEmail = name === "email";
     const isPassword = name === "password";
-    const emailTest = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
+    const emailTest = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
     validity[name] = value.length > 0;
     fieldValidationErrors[name] = validity[name]
       ? ""
@@ -60,7 +54,7 @@ export default class Login extends Component {
         validity[name] = value.length >= 3;
         fieldValidationErrors[name] = validity[name]
           ? ""
-          : `${name} should be 3 characters minimum`;
+          : `${name} should be minimum 3 characters in length`;
       }
     }
     this.setState({
@@ -105,7 +99,7 @@ export default class Login extends Component {
             id="email"
             name="email"
             type="email"
-            onChange={this.handleChange}
+            onChange={this.handleChange.bind(this)}
             value={formValues.email}
           />
         </div>
@@ -115,7 +109,7 @@ export default class Login extends Component {
             id="password"
             name="password"
             type="password"
-            onChange={this.handleChange}
+            onChange={this.handleChange.bind(this)}
             value={formValues.password}
           />
         </div>
