@@ -85,7 +85,7 @@ export default class Login extends Component {
   render() {
     const { formValues, formErrors, isSubmitting } = this.state;
     return (
-      <Form>
+      <Form onSubmit={this.handleSubmit.bind(this)}>
         <Box marginTop="2rem" bgcolor="primary.main">
           <h2
             style={{ textAlign: "center", fontSize: "2.4rem", color: "white" }}
