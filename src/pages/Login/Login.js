@@ -22,6 +22,7 @@ export default class Login extends Component {
         password: false,
       },
       isSubmitting: false,
+      timer: 0,
     };
   }
 
@@ -82,8 +83,23 @@ export default class Login extends Component {
     }
   }
 
+  timer() {
+    const interval = setInterval(() => {
+      this.setState((state) => ({ timer: state.timer + 1 }));
+    }, 1000);
+    return interval;
+  }
+
+  componentDidMount() {
+    this.timer();
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.timer());
+  }
+
   render() {
-    const { formValues, formErrors, isSubmitting } = this.state;
+    const { formValues, formErrors, isSubmitting, timer } = this.state;
     return (
       <Form onSubmit={this.handleSubmit.bind(this)}>
         <Box marginTop="2rem" bgcolor="primary.main">
@@ -116,6 +132,7 @@ export default class Login extends Component {
         <Button color="primary" variant="contained" type="submit">
           Login/Register
         </Button>
+        <div>{timer}</div>
       </Form>
     );
   }
