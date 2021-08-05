@@ -9,77 +9,73 @@ export default class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      formValues: {
-        email: "",
-        password: "",
+      email: {
+        value: "",
+        validity: false,
+        error: "",
       },
-      formErrors: {
-        email: "",
-        password: "",
+      password: {
+        value: "",
+        validity: false,
+        error: "",
       },
-      formValidity: {
-        email: false,
-        password: false,
-      },
-      isSubmitting: false,
       timer: 0,
     };
   }
 
   handleChange({ target }) {
-    const { formValues } = this.state;
-    formValues[target.name] = target.value;
-    this.setState({ formValues });
-    this.handleValidation(target);
+    const { name, value } = target;
+
+    this.state[name].value = value;
+    this.setState(this.state[name]);
+    this.handleValidation(this.state[name]);
   }
 
-  handleValidation(target) {
-    const { name, value } = target;
-    const fieldValidationErrors = this.state.formErrors;
-    const validity = this.state.formValidity;
-    const isEmail = name === "email";
-    const isPassword = name === "password";
+  handleValidation(field) {
+    let error = field.error;
+    let validity = field.validity;
+    const isEmail = field.name === "email";
+    const isPassword = field.name === "password";
     const emailTest = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
-    validity[name] = value.length > 0;
-    fieldValidationErrors[name] = validity[name]
-      ? ""
-      : `${name} is required and cannot be empty`;
-    if (validity[name]) {
+    validity = field.value.length > 0;
+    error = validity ? "" : `${field.name} is required and cannot be empty`;
+    if (validity) {
       if (isEmail) {
-        validity[name] = emailTest.test(value);
-        fieldValidationErrors[name] = validity[name]
-          ? ""
-          : `${name} should be a valid email address`;
+        validity = emailTest.test(field.value);
+        error = validity ? "" : `${field.name} should be a valid email address`;
       }
       if (isPassword) {
-        validity[name] = value.length >= 3;
-        fieldValidationErrors[name] = validity[name]
+        validity = field.value.length >= 3;
+        error = validity
           ? ""
-          : `${name} should be minimum 3 characters in length`;
+          : `${field.name} should be minimum 3 characters in length`;
       }
     }
     this.setState({
-      formErrors: fieldValidationErrors,
-      formValidity: validity,
+      [field.name]: { value: field.value, validity, error },
     });
   }
 
   handleSubmit(event) {
     event.preventDefault();
-    this.setState({ isSubmitting: true });
-    const { formValues, formValidity } = this.state;
-    if (Object.values(formValidity).every(Boolean)) {
+    const { email, password } = this.state;
+    if (email.validity && password.validity) {
       alert("Form is validated! Submitting the form...");
-      this.setState({ isSubmitting: false });
+      this.setState({
+        email: {
+          value: "",
+          validity: false,
+          error: "",
+        },
+        password: {
+          value: "",
+          validity: false,
+          error: "",
+        },
+      });
     } else {
-      for (let key in formValues) {
-        let target = {
-          name: key,
-          value: formValues[key],
-        };
-        this.handleValidation(target);
-      }
-      this.setState({ isSubmitting: false });
+      this.handleValidation({ name: "email", value: email.value });
+      this.handleValidation({ name: "password", value: password.value });
     }
   }
 
@@ -99,7 +95,7 @@ export default class Login extends Component {
   }
 
   render() {
-    const { formValues, formErrors, isSubmitting, timer } = this.state;
+    const { email, password, timer } = this.state;
     return (
       <Form onSubmit={this.handleSubmit.bind(this)}>
         <Box marginTop="2rem" bgcolor="primary.main">
@@ -116,7 +112,7 @@ export default class Login extends Component {
             name="email"
             type="email"
             onChange={this.handleChange.bind(this)}
-            value={formValues.email}
+            value={email.value}
           />
         </div>
         <div>
@@ -126,7 +122,7 @@ export default class Login extends Component {
             name="password"
             type="password"
             onChange={this.handleChange.bind(this)}
-            value={formValues.password}
+            value={password.value}
           />
         </div>
         <Button color="primary" variant="contained" type="submit">
