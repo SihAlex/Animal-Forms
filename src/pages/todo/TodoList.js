@@ -2,8 +2,11 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { Button, makeStyles, Container, Box } from "@material-ui/core";
 
-import TodoListItem from "./TodoListItem";
 import { todoActions } from "../../store/todo-list";
+import { useState } from "react";
+
+import TodoListItem from "./TodoListItem";
+import AddEntryForm from "./forms/AddEntryForm";
 
 const useStyles = makeStyles({
   todoList: {
@@ -34,6 +37,7 @@ const useStyles = makeStyles({
 });
 
 const TodoList = () => {
+  const [showAddForm, setShowAddForm] = useState(false);
   const classes = useStyles();
   const dispatch = useDispatch();
   const todoList = useSelector((state) => state.todoList) || [
@@ -47,20 +51,21 @@ const TodoList = () => {
     },
   ];
 
+  const addItemHandler = () => {
+    setShowAddForm(true);
+  };
+
   return (
     <Box maxWidth="60rem" margin="0 auto">
       <Box marginTop="2rem" bgcolor="primary.main">
         <h2 className={classes.pageText}>TODO</h2>
       </Box>
+      {showAddForm ? <AddEntryForm /> : null}
       <div className={classes.listControls}>
-        <Button color="primary" variant="contained">
+        <Button onClick={addItemHandler} color="primary" variant="contained">
           Add entry
         </Button>
-        <Button
-          //   onClick={removeEntryHandler}
-          color="secondary"
-          variant="contained"
-        >
+        <Button color="secondary" variant="contained">
           Remove selected
         </Button>
       </div>

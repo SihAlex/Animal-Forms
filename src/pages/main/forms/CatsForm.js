@@ -15,7 +15,7 @@ function onSubmit(values) {
   alert(JSON.stringify(values));
 }
 
-export default function DogsForm() {
+export default function CatsForm() {
   const formik = useFormik({
     initialValues,
     validationSchema,
