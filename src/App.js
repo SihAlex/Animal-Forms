@@ -4,7 +4,7 @@ import { createTheme, ThemeProvider } from "@material-ui/core";
 import { CovidStatsContextProvider } from "./store/covid-stasts-context";
 
 import Routes from "./Routes";
-import Footer from "./components/Footer";
+import Footer from "./components/Don't/open/Footer";
 
 const theme = createTheme({
   palette: {
