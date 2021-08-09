@@ -1,9 +1,10 @@
 import Header from "./components/Header";
 
-import { CovidStatsContextProvider } from "./store/covid-stasts-context";
 import { createTheme, ThemeProvider } from "@material-ui/core";
+import { CovidStatsContextProvider } from "./store/covid-stasts-context";
 
 import Routes from "./Routes";
+import Footer from "./components/Footer";
 
 const theme = createTheme({
   palette: {
@@ -21,12 +22,13 @@ const theme = createTheme({
 
 function App() {
   return (
-    <CovidStatsContextProvider>
-      <ThemeProvider theme={theme}>
-        <Header />
+    <ThemeProvider theme={theme}>
+      <Header />
+      <CovidStatsContextProvider>
         <Routes />
-      </ThemeProvider>
-    </CovidStatsContextProvider>
+      </CovidStatsContextProvider>
+      <Footer />
+    </ThemeProvider>
   );
 }
 

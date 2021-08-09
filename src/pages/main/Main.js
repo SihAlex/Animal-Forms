@@ -64,7 +64,7 @@ export default function Main() {
   }
 
   return (
-    <>
+    <Box maxWidth="60rem" margin="0 auto">
       <Box marginTop="2rem" bgcolor="primary.main">
         <h2 className={classes.pageText}>Choose one form:</h2>
       </Box>
@@ -90,6 +90,6 @@ export default function Main() {
         </FormControl>
         {getChosenForm(form)}
       </Container>
-    </>
+    </Box>
   );
 }

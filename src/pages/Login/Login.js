@@ -97,39 +97,45 @@ export default class Login extends Component {
   render() {
     const { email, password, timer } = this.state;
     return (
-      <Form onSubmit={this.handleSubmit.bind(this)}>
-        <Box marginTop="2rem" bgcolor="primary.main">
-          <h2
-            style={{ textAlign: "center", fontSize: "2.4rem", color: "white" }}
-          >
-            Login
-          </h2>
-        </Box>
-        <div>
-          <CustomInputComponent
-            label="Email"
-            id="email"
-            name="email"
-            type="email"
-            onChange={this.handleChange.bind(this)}
-            value={email.value}
-          />
-        </div>
-        <div>
-          <CustomInputComponent
-            label="Password"
-            id="password"
-            name="password"
-            type="password"
-            onChange={this.handleChange.bind(this)}
-            value={password.value}
-          />
-        </div>
-        <Button color="primary" variant="contained" type="submit">
-          Login/Register
-        </Button>
-        <div>{timer}</div>
-      </Form>
+      <Box maxWidth="60rem" margin="0 auto">
+        <Form onSubmit={this.handleSubmit.bind(this)}>
+          <Box marginTop="2rem" bgcolor="primary.main">
+            <h2
+              style={{
+                textAlign: "center",
+                fontSize: "2.4rem",
+                color: "white",
+              }}
+            >
+              Login
+            </h2>
+          </Box>
+          <div>
+            <CustomInputComponent
+              label="Email"
+              id="email"
+              name="email"
+              type="email"
+              onChange={this.handleChange.bind(this)}
+              value={email.value}
+            />
+          </div>
+          <div>
+            <CustomInputComponent
+              label="Password"
+              id="password"
+              name="password"
+              type="password"
+              onChange={this.handleChange.bind(this)}
+              value={password.value}
+            />
+          </div>
+          <Button color="primary" variant="contained" type="submit">
+            Login/Register
+          </Button>
+          <div>{timer}</div>
+        </Form>
+      </Box>
     );
   }
 }

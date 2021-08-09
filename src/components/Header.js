@@ -48,6 +48,9 @@ export default function Header() {
             <NavLink to="/info">Info</NavLink>
           </li>
           <li>
+            <NavLink to="/todo">TODO</NavLink>
+          </li>
+          <li>
             <NavLink to="/login">Login</NavLink>
           </li>
         </ul>
