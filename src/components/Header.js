@@ -2,7 +2,7 @@ import { NavLink } from "react-router-dom";
 
 import { makeStyles } from "@material-ui/core/styles";
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   header: {
     padding: "1.2rem 0",
     font: "bolder 2.2rem Arial, sans-serif",
@@ -19,9 +19,18 @@ const useStyles = makeStyles(() => ({
       maxWidth: "95%",
       padding: "0 2.5%",
       margin: 0,
+      [theme.breakpoints.down("sm")]: {
+        flexDirection: "column",
+        alignItems: "center",
+      },
     },
     "& li": {
       listStyle: "none",
+    },
+    "& li:not(:last-child)": {
+      [theme.breakpoints.down("sm")]: {
+        marginBottom: "1rem",
+      },
     },
     "& a": {
       textDecoration: "none",
@@ -46,6 +55,9 @@ export default function Header() {
           </li>
           <li>
             <NavLink to="/info">Info</NavLink>
+          </li>
+          <li>
+            <NavLink to="/meme">?</NavLink>
           </li>
           <li>
             <NavLink to="/todo">TODO</NavLink>

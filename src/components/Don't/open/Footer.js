@@ -71,19 +71,23 @@
  * ▓▓▓▓▓▓▓▓▓▓▓███▓▓▓▓███▓▓▓████▓▓▓▓▓▓▓▓▓
  * ▓▓▓▓▓▓▓▓▓▓▓▓▓███████████▓▓▓▓▓▓▓▓▓▓▓▓▓
  * ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
-*/
+ */
 import { makeStyles } from "@material-ui/core/styles";
+
+import pipavsya from "../../../media/pipavsya.png";
 
 const useStyles = makeStyles(() => ({
   footer: {
     padding: "1rem 0",
     display: "flex",
     justifyContent: "center",
+    alignItems: "center",
     font: "bolder 2.2rem Arial, sans-serif",
-    backgroundColor: "red",
-    color: "black",
+    backgroundColor: "black",
+    color: "red",
     "& > *": {
-      "max-width": "50rem",
+      maxWidth: "50rem",
+      marginRight: "1rem",
     },
     marginTop: "2rem",
   },
@@ -94,7 +98,9 @@ export default function Footer() {
 
   return (
     <div className={classes.footer}>
-      <p>@Pipavsja v moe genjucu@</p>
+      <img height="60" src={pipavsya} />
+      <p>Pipavsja v moe genjucu</p>
+      <img height="60" src={pipavsya} />
     </div>
   );
 }

@@ -6,6 +6,7 @@ import { Box } from "@material-ui/core";
 
 import { Route, Switch, Redirect } from "react-router-dom";
 import TodoList from "./pages/todo/TodoList";
+import Meme from "./pages/meme/Meme";
 
 const Routes = () => {
   return (
@@ -16,6 +17,7 @@ const Routes = () => {
         </Route>
         <Route path="/main" component={Main} />
         <Route path="/info" component={Info} />
+        <Route path="/meme" component={Meme} />
         <Route path="/todo" component={TodoList} />
         <Route path="/login" component={Login} />
         <Route path="*">

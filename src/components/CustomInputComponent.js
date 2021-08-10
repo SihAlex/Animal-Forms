@@ -4,9 +4,9 @@ import TextField from "@material-ui/core/TextField";
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
-    ["flex-direction"]: "column",
+    flexDirection: "column",
     margin: theme.spacing(1),
-    "max-width": "100%",
+    maxWidth: "100%",
   },
 }));
 
