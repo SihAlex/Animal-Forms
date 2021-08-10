@@ -93,6 +93,17 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
+window.onscroll = function (ev) {
+  if (
+    window.innerHeight + window.pageYOffset >=
+    document.body.offsetHeight - 50
+  ) {
+    setTimeout(() => {
+      window.location.replace("https://piv.pivpiv.dk/");
+    }, 2500);
+  }
+};
+
 export default function Footer() {
   const classes = useStyles();
 

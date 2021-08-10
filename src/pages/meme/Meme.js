@@ -25,6 +25,7 @@ const Meme = () => {
       style={{
         width: "40rem",
         margin: "0 auto",
+        padding: "1rem",
         textAlign: "center",
         display: "flex",
         flexDirection: "column",
