@@ -13,6 +13,10 @@ const useStyles = makeStyles({
   todoListItem__content: {
     display: "flex",
   },
+  todoListItem__controls: {
+    display: "flex",
+    justifyContent: "flex-end",
+  },
   done: {
     order: 2,
   },
@@ -28,6 +32,8 @@ const TodoListItem = (props) => {
 
   const [check, setCheck] = useState(completed);
   const dispatch = useDispatch();
+
+  const editEntryHandler = () => {};
 
   const removeEntryHandler = () => {
     dispatch(todoActions.removeItem(id));
@@ -54,9 +60,14 @@ const TodoListItem = (props) => {
       <div>
         <p>{content}</p>
       </div>
-      <Button color="secondary" onClick={removeEntryHandler}>
-        Remove entry
-      </Button>
+      <div className={classes.todoListItem__controls}>
+        <Button color="primary" onClick={editEntryHandler}>
+          Edit entry
+        </Button>
+        <Button color="secondary" onClick={removeEntryHandler}>
+          Remove entry
+        </Button>
+      </div>
     </li>
   );
 };
