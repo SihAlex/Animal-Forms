@@ -8,9 +8,16 @@ const useStyles = makeStyles({
     display: "flex",
     flexDirection: "column",
     minWidth: "30rem",
+    order: 1,
   },
   todoListItem__content: {
     display: "flex",
+  },
+  done: {
+    order: 2,
+  },
+  "h2.done": {
+    textDecoration: "line-through",
   },
 });
 
@@ -39,10 +46,10 @@ const TodoListItem = (props) => {
   };
 
   return (
-    <li className={classes.todoListItem}>
+    <li className={`${classes.todoListItem} ${check ? classes.done : ""}`}>
       <div className={classes.todoListItem__content}>
         <Checkbox onChange={toggleHandler} checked={check} />
-        <h2>{title}</h2>
+        <h2 className={check ? classes.done : ""}>{title}</h2>
       </div>
       <div>
         <p>{content}</p>
