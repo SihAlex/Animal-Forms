@@ -4,16 +4,22 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { todoActions } from "../../store/todo-list";
 import TodoEntryEditForm from "./forms/TodoEntryEditForm";
+import DragHandler from "../../components/DragHandler";
 
 const useStyles = makeStyles({
   todoListItem: {
     display: "flex",
     flexDirection: "column",
-    minWidth: "30rem",
+    width: "30rem",
     order: 1,
   },
-  todoListItem__content: {
+  todoListItem__container: {
     display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  todoListItem__content: {
+    paddingLeft: "5.25px",
   },
   todoListItem__controls: {
     display: "flex",
@@ -33,7 +39,6 @@ const TodoListItem = (props) => {
   const { id, title, content, completed } = props.item;
 
   const { showConfirmation } = props;
-  const { draggableProps, dragHandleProps, innerRef } = props.provided;
 
   const [check, setCheck] = useState(completed);
   const [editing, setEditing] = useState(false);
@@ -70,11 +75,12 @@ const TodoListItem = (props) => {
     <TodoEntryEditForm item={props.item} onClose={closeEditEntryHandler} />
   ) : (
     <>
-      <div className={classes.todoListItem__content}>
-        <Checkbox onChange={toggleCompletionHandler} checked={check} />
+      <div className={classes.todoListItem__container}>
+        <DragHandler />
         <h2 className={check ? classes.doneTitle : ""}>{title}</h2>
+        <Checkbox onChange={toggleCompletionHandler} checked={check} />
       </div>
-      <div>
+      <div className={classes.todoListItem__content}>
         <p>{content}</p>
       </div>
     </>
@@ -82,10 +88,9 @@ const TodoListItem = (props) => {
 
   return (
     <li
-      className={`${classes.todoListItem} ${check ? classes.done : ""}`}
-      {...draggableProps}
-      {...dragHandleProps}
-      ref={innerRef}
+      className={`todoListItem ${classes.todoListItem} ${
+        check ? classes.done : ""
+      }`}
     >
       {todoEntryContent}
       <div className={classes.todoListItem__controls}>

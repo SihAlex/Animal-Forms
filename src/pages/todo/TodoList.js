@@ -9,8 +9,6 @@ import TodoListItem from "./TodoListItem";
 import TodoEntryForm from "./forms/TodoEntryForm";
 import { todoListControlsActions } from "../../store/todo-list-controls";
 
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-
 const useStyles = makeStyles({
   todoList: {
     margin: 0,
@@ -19,7 +17,7 @@ const useStyles = makeStyles({
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    "& > li": {
+    "& > li.todoListItem": {
       listStyle: "none",
       borderBottom: "0.2rem solid gray",
     },
@@ -78,10 +76,6 @@ const TodoList = () => {
     dispatch(todoListControlsActions.setShowConfirmation(checkbox.checked));
   };
 
-  const dragEndHandler = (result) => {
-    console.log(result);
-  };
-
   const removeCompletedEntriesButton = todoList.filter((item) => item.completed)
     .length > 0 && (
     <Button
@@ -95,38 +89,12 @@ const TodoList = () => {
 
   const confirmationCheckbox = todoList.length > 0 && (
     <Box display="flex">
-      <p>Show confirmation</p>
+      <p>Removal confirmation</p>
       <Checkbox
         onChange={toggleConfirmationHandler}
         checked={showConfirmation}
       />
     </Box>
-  );
-
-  const todoListJSX = (provided) => (
-    <ul
-      className={classes.todoList}
-      ref={provided.innerRef}
-      {...provided.droppableProps}
-    >
-      {todoList.length === 0 ? <h2>No entries have been made yet.</h2> : null}
-      {todoList.map((item, index) => (
-        <Draggable key={item.id} draggableId={item.id} index={index}>
-          {(provided) => {
-            return (
-              <TodoListItem
-                className={classes.listItem}
-                provided={provided}
-                key={item.id}
-                item={item}
-                showConfirmation={showConfirmation}
-              />
-            );
-          }}
-        </Draggable>
-      ))}
-      {provided.placeholder}
-    </ul>
   );
 
   return (
@@ -158,11 +126,16 @@ const TodoList = () => {
           </>
         )}
       </div>
-      <DragDropContext onDragEnd={dragEndHandler}>
-        <Droppable droppableId="todoListDND">
-          {(provided) => todoListJSX(provided)}
-        </Droppable>
-      </DragDropContext>
+      <ul className={classes.todoList}>
+        {todoList.length === 0 ? <h2>No entries have been made yet.</h2> : null}
+        {todoList.map((item) => (
+          <TodoListItem
+            key={item.id}
+            item={item}
+            showConfirmation={showConfirmation}
+          />
+        ))}
+      </ul>
     </Box>
   );
 };
