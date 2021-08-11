@@ -4,14 +4,12 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { todoActions } from "../../store/todo-list";
 import TodoEntryEditForm from "./forms/TodoEntryEditForm";
-import DragHandler from "../../components/DragHandler";
 
 const useStyles = makeStyles({
   todoListItem: {
     display: "flex",
     flexDirection: "column",
     width: "30rem",
-    order: 1,
   },
   todoListItem__container: {
     display: "flex",
@@ -24,9 +22,6 @@ const useStyles = makeStyles({
   todoListItem__controls: {
     display: "flex",
     justifyContent: "flex-end",
-  },
-  done: {
-    order: 2,
   },
   doneTitle: {
     textDecoration: "line-through",
@@ -76,7 +71,6 @@ const TodoListItem = (props) => {
   ) : (
     <>
       <div className={classes.todoListItem__container}>
-        <DragHandler />
         <h2 className={check ? classes.doneTitle : ""}>{title}</h2>
         <Checkbox onChange={toggleCompletionHandler} checked={check} />
       </div>
@@ -87,11 +81,7 @@ const TodoListItem = (props) => {
   );
 
   return (
-    <li
-      className={`todoListItem ${classes.todoListItem} ${
-        check ? classes.done : ""
-      }`}
-    >
+    <li className={`${classes.todoListItem} ${check ? "done" : ""}`}>
       {todoEntryContent}
       <div className={classes.todoListItem__controls}>
         {editing ? (
