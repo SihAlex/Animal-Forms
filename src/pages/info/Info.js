@@ -29,15 +29,18 @@ export default function Info() {
   const classes = useStyles();
 
   const covStatsCtx = useContext(CovidStatsContext);
-  return (
-    <div className={classes.info}>
-      <ul>
-        <p>Covid statistics</p>
-        <li>Country: {covStatsCtx.country}</li>
-        <li>Confirmed: {covStatsCtx.confirmed}</li>
-        <li>Critical: {covStatsCtx.critical}</li>
-        <li>Deaths: {covStatsCtx.deaths}</li>
-      </ul>
-    </div>
+
+  const stats = covStatsCtx ? (
+    <ul>
+      <p>Covid statistics</p>
+      <li>Country: {covStatsCtx.country}</li>
+      <li>Confirmed: {covStatsCtx.confirmed}</li>
+      <li>Critical: {covStatsCtx.critical}</li>
+      <li>Deaths: {covStatsCtx.deaths}</li>
+    </ul>
+  ) : (
+    ""
   );
+
+  return <div className={classes.info}>{stats}</div>;
 }

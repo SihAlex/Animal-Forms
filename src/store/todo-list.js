@@ -52,6 +52,21 @@ const todoSlice = createSlice({
         updateLocalStorage(state.todoList);
       }
     },
+    editItem(state, action) {
+      if (action.payload) {
+        const eItemId = action.payload.id;
+        const eItemIndex = state.todoList.findIndex(
+          (item) => item.id === eItemId
+        );
+        if (eItemIndex > -1) {
+          state.todoList[eItemIndex] = action.payload;
+        }
+      }
+    },
+    removeCompletedItems(state) {
+      state.todoList = state.todoList.filter((item) => !item.completed);
+      updateLocalStorage(state.todoList);
+    },
     check(state, action) {
       if (action.payload) {
         const completedEntryId = action.payload;

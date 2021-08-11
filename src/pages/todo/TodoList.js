@@ -1,12 +1,15 @@
 import { useDispatch, useSelector } from "react-redux";
 import { todoActions } from "../../store/todo-list";
 
-import { Button, makeStyles, Container, Box } from "@material-ui/core";
+import { Button, makeStyles, Checkbox, Box } from "@material-ui/core";
 
 import { useState } from "react";
 
 import TodoListItem from "./TodoListItem";
 import TodoEntryForm from "./forms/TodoEntryForm";
+import { todoListControlsActions } from "../../store/todo-list-controls";
+
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
 const useStyles = makeStyles({
   todoList: {
@@ -25,7 +28,7 @@ const useStyles = makeStyles({
     display: "flex",
     justifyContent: "center",
     padding: "1rem",
-    "& > Button:not(:last-child)": {
+    "& > *:not(:last-child)": {
       marginRight: "1rem",
     },
   },
@@ -39,6 +42,13 @@ const useStyles = makeStyles({
 
 const TodoList = () => {
   const [showAddForm, setShowAddForm] = useState(false);
+
+  const todoShowConfirmation = useSelector(
+    (state) => state.todoControls.showConfirmation
+  );
+  const [showConfirmation, setShowConfirmation] =
+    useState(todoShowConfirmation);
+
   const classes = useStyles();
 
   const todoList = useSelector((state) => state.todo.todoList);
@@ -53,10 +63,71 @@ const TodoList = () => {
   };
 
   const removeCompletedTasksHandler = () => {
-    todoList
-      .filter((entry) => entry.completed === true)
-      .forEach((entry) => dispatch(todoActions.removeItem(entry.id)));
+    const confirmation = showConfirmation
+      ? window.confirm("Are you sure you want to delete completed entries?")
+      : true;
+    dispatch(todoActions.removeCompletedItems());
   };
+
+  const toggleConfirmationHandler = (event) => {
+    const checkbox = event.target;
+    if (!checkbox) {
+      return;
+    }
+    setShowConfirmation(checkbox.checked);
+    dispatch(todoListControlsActions.setShowConfirmation(checkbox.checked));
+  };
+
+  const dragEndHandler = (result) => {
+    console.log(result);
+  };
+
+  const removeCompletedEntriesButton = todoList.filter((item) => item.completed)
+    .length > 0 && (
+    <Button
+      onClick={removeCompletedTasksHandler}
+      color="secondary"
+      variant="contained"
+    >
+      Remove completed tasks
+    </Button>
+  );
+
+  const confirmationCheckbox = todoList.length > 0 && (
+    <Box display="flex">
+      <p>Show confirmation</p>
+      <Checkbox
+        onChange={toggleConfirmationHandler}
+        checked={showConfirmation}
+      />
+    </Box>
+  );
+
+  const todoListJSX = (provided) => (
+    <ul
+      className={classes.todoList}
+      ref={provided.innerRef}
+      {...provided.droppableProps}
+    >
+      {todoList.length === 0 ? <h2>No entries have been made yet.</h2> : null}
+      {todoList.map((item, index) => (
+        <Draggable key={item.id} draggableId={item.id} index={index}>
+          {(provided) => {
+            return (
+              <TodoListItem
+                className={classes.listItem}
+                provided={provided}
+                key={item.id}
+                item={item}
+                showConfirmation={showConfirmation}
+              />
+            );
+          }}
+        </Draggable>
+      ))}
+      {provided.placeholder}
+    </ul>
+  );
 
   return (
     <Box maxWidth="60rem" margin="0 auto">
@@ -82,22 +153,16 @@ const TodoList = () => {
             >
               Add entry
             </Button>
-            <Button
-              onClick={removeCompletedTasksHandler}
-              color="secondary"
-              variant="contained"
-            >
-              Remove completed tasks
-            </Button>
+            {removeCompletedEntriesButton}
+            {confirmationCheckbox}
           </>
         )}
       </div>
-      <ul className={classes.todoList}>
-        {todoList.length === 0 ? <h2>No entries have been made yet.</h2> : null}
-        {todoList.map((item) => (
-          <TodoListItem key={item.id} item={item} />
-        ))}
-      </ul>
+      <DragDropContext onDragEnd={dragEndHandler}>
+        <Droppable droppableId="todoListDND">
+          {(provided) => todoListJSX(provided)}
+        </Droppable>
+      </DragDropContext>
     </Box>
   );
 };
