@@ -68,9 +68,8 @@ const todoSlice = createSlice({
       updateLocalStorage(state.todoList);
     },
     replaceItem(state, action) {
-      if (action.payload != null) {
+      if (action.payload.destination !== null) {
         const result = action.payload;
-
         state.todoList.splice(
           result.destination.index,
           0,

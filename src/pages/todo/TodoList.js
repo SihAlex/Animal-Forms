@@ -26,6 +26,7 @@ const useStyles = makeStyles({
       display: "flex",
       alignItems: "center",
       order: 1,
+      backgroundColor: "white",
     },
   },
   listControls: {
@@ -146,6 +147,7 @@ const TodoList = () => {
                   )}
                 </Draggable>
               ))}
+              {provided.placeholder}
             </div>
           )}
         </Droppable>
