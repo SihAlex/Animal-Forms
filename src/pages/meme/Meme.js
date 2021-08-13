@@ -1,4 +1,4 @@
-import { Button } from "@material-ui/core";
+import { Box, Button, CircularProgress } from "@material-ui/core";
 import { useCallback, useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getMemes } from "../../store/meme-api-actions";
@@ -21,17 +21,21 @@ const Meme = () => {
   const meme = useSelector((state) => state.meme);
 
   return (
-    <div
-      style={{
-        width: "40rem",
-        margin: "0 auto",
-        padding: "1rem",
-        textAlign: "center",
-        display: "flex",
-        flexDirection: "column",
-      }}
+    <Box
+      width="40rem"
+      margin="0 auto"
+      padding="1rem"
+      textAlign="center"
+      display="flex"
+      flexDirection="column"
     >
-      {isUpdating ? "Loading..." : <img src={meme.url} />}
+      {isUpdating ? (
+        <Box margin="0 auto">
+          <CircularProgress />
+        </Box>
+      ) : (
+        <img src={meme.url} />
+      )}
       <Button
         onClick={handleUpdate}
         variant="contained"
@@ -41,7 +45,7 @@ const Meme = () => {
       >
         New meme!
       </Button>
-    </div>
+    </Box>
   );
 };
 
