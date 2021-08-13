@@ -103,6 +103,56 @@ const TodoList = () => {
     </Box>
   );
 
+  const todoListContent = (
+    <DragDropContext
+      onDragEnd={(param) => {
+        dispatch(todoActions.replaceItem(param));
+      }}
+    >
+      <ul className={classes.todoList}>
+        <Droppable droppableId="todoListDroppable">
+          {(provided, snapshot) => (
+            <div
+              ref={provided.innerRef}
+              style={{
+                backgroundColor: snapshot.isDraggingOver ? "#eeffeb" : "white",
+              }}
+              {...provided.droppableProps}
+            >
+              {todoList.length === 0 ? (
+                <h2>No entries have been made yet.</h2>
+              ) : null}
+              {todoList.map((item, index) => (
+                <Draggable
+                  key={item.id}
+                  draggableId={"draggable-" + item.id}
+                  index={index}
+                  isDragDisabled={item.completed}
+                >
+                  {(provided, snapshot) => (
+                    <div
+                      className="todoListItem"
+                      ref={provided.innerRef}
+                      {...provided.draggableProps}
+                      {...provided.dragHandleProps}
+                    >
+                      <DragHandler />
+                      <TodoListItem
+                        key={item.id}
+                        item={item}
+                        showConfirmation={showConfirmation}
+                      />
+                    </div>
+                  )}
+                </Draggable>
+              ))}
+            </div>
+          )}
+        </Droppable>
+      </ul>
+    </DragDropContext>
+  );
+
   return (
     <Box maxWidth="60rem" margin="0 auto">
       <Box marginTop="2rem" bgcolor="primary.main">
@@ -132,55 +182,7 @@ const TodoList = () => {
           </>
         )}
       </div>
-      <DragDropContext
-        onDragEnd={(param) => {
-          dispatch(todoActions.replaceItem(param));
-        }}
-      >
-        <ul className={classes.todoList}>
-          <Droppable droppableId="todoListDroppable">
-            {(provided, snapshot) => (
-              <div
-                ref={provided.innerRef}
-                style={{
-                  backgroundColor: snapshot.isDraggingOver
-                    ? "#eeffeb"
-                    : "white",
-                }}
-                {...provided.droppableProps}
-              >
-                {todoList.length === 0 ? (
-                  <h2>No entries have been made yet.</h2>
-                ) : null}
-                {todoList.map((item, index) => (
-                  <Draggable
-                    key={item.id}
-                    draggableId={"draggable-" + item.id}
-                    index={index}
-                    isDragDisabled={item.completed}
-                  >
-                    {(provided, snapshot) => (
-                      <div
-                        className="todoListItem"
-                        ref={provided.innerRef}
-                        {...provided.draggableProps}
-                        {...provided.dragHandleProps}
-                      >
-                        <DragHandler />
-                        <TodoListItem
-                          key={item.id}
-                          item={item}
-                          showConfirmation={showConfirmation}
-                        />
-                      </div>
-                    )}
-                  </Draggable>
-                ))}
-              </div>
-            )}
-          </Droppable>
-        </ul>
-      </DragDropContext>
+      {todoListContent}
     </Box>
   );
 };

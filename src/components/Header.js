@@ -1,6 +1,10 @@
 import { NavLink } from "react-router-dom";
 
+import { useState } from "react";
+
 import { makeStyles } from "@material-ui/core/styles";
+
+import useWindowDimensions from "../hooks/useWindowDimensions";
 
 const useStyles = makeStyles((theme) => ({
   header: {
@@ -41,31 +45,86 @@ const useStyles = makeStyles((theme) => ({
       color: "lightgreen",
     },
   },
+  closeList: {
+    textAlign: "center",
+    paddingBottom: "1rem",
+  },
+  closeList__button: {
+    border: "none",
+    background: "none",
+    color: "white",
+    fontSize: "2rem",
+    padding: 0,
+    width: "2rem",
+    "&:hover": {
+      color: "lightgreen",
+    },
+  },
 }));
 
 export default function Header() {
   const classes = useStyles();
 
+  const dimensions = useWindowDimensions();
+
+  const [isOpen, setIsOpen] = useState(false);
+
+  const openMenuHandler = () => {
+    setIsOpen(true);
+  };
+
+  const closeMenuHandler = () => {
+    setIsOpen(false);
+  };
+
+  const closeButton = (
+    <div className={classes.closeList}>
+      <button onClick={closeMenuHandler} className={classes.closeList__button}>
+        X
+      </button>
+    </div>
+  );
+
+  const mobileClosedHeader = (
+    <div style={{ display: "flex", justifyContent: "space-between" }}>
+      <div style={{ width: "2rem" }}></div>
+      <NavLink to="/main">Main</NavLink>
+      <div>
+        <button onClick={openMenuHandler} className={classes.closeList__button}>
+          +
+        </button>
+      </div>
+    </div>
+  );
+
   return (
     <header className={classes.header}>
       <nav className={classes.nav}>
-        <ul>
-          <li>
-            <NavLink to="/main">Main</NavLink>
-          </li>
-          <li>
-            <NavLink to="/info">Info</NavLink>
-          </li>
-          <li>
-            <NavLink to="/meme">?</NavLink>
-          </li>
-          <li>
-            <NavLink to="/todo">TODO</NavLink>
-          </li>
-          <li>
-            <NavLink to="/login">Login</NavLink>
-          </li>
-        </ul>
+        {isOpen && dimensions.width <= 960 ? closeButton : null}
+
+        {!isOpen && dimensions.width <= 960 ? (
+          mobileClosedHeader
+        ) : (
+          <ul>
+            <>
+              <li>
+                <NavLink to="/main">Main</NavLink>
+              </li>
+              <li>
+                <NavLink to="/info">Info</NavLink>
+              </li>
+              <li>
+                <NavLink to="/meme">?</NavLink>
+              </li>
+              <li>
+                <NavLink to="/todo">TODO</NavLink>
+              </li>
+              <li>
+                <NavLink to="/login">Login</NavLink>
+              </li>
+            </>
+          </ul>
+        )}
       </nav>
     </header>
   );
