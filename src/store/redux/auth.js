@@ -10,8 +10,8 @@ const authSlice = createSlice({
     login(state, action) {
       if (!action.payload.error) {
         state.isLoggedIn = true;
-        state.token = action.payload;
-        localStorage.setItem("token", action.payload);
+        state.token = action.payload.token;
+        localStorage.setItem("token", action.payload.token);
         state.error = "";
       }
     },
