@@ -1,6 +1,6 @@
 import { makeStyles } from "@material-ui/core/styles";
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   footer: {
     padding: "1.5rem 0",
     position: "relative",
@@ -8,7 +8,8 @@ const useStyles = makeStyles(() => ({
     left: 0,
     right: 0,
     font: "bolder 2.2rem Arial, sans-serif",
-    backgroundColor: "#ffffff",
+    textAlign: "center",
+    backgroundColor: theme.background,
     "& > *": {
       maxWidth: "50rem",
       marginRight: "1rem",
@@ -17,8 +18,8 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-export default function Footer() {
+export default function Footer(props) {
   const classes = useStyles();
 
-  return <div className={classes.footer}></div>;
+  return <div className={classes.footer}>{props.children}</div>;
 }

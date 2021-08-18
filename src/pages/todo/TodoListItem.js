@@ -1,23 +1,25 @@
-import React from "react";
+import React, { useState } from "react";
 import { makeStyles, Button, Checkbox } from "@material-ui/core";
-import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { todoActions } from "../../store/todo-list";
+import { useDispatch } from "react-redux";
+import { todoActions } from "../../store/redux/todo-list";
 import TodoEntryEditForm from "./forms/TodoEntryEditForm";
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   todoListItem: {
     display: "flex",
     flexDirection: "column",
+    backgroundColor: "white",
     width: "30rem",
   },
   todoListItem__container: {
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
+    color: theme.palette.primary.main,
   },
   todoListItem__content: {
     paddingLeft: "5.25px",
+    color: "black",
   },
   todoListItem__controls: {
     display: "flex",
@@ -26,7 +28,7 @@ const useStyles = makeStyles({
   doneTitle: {
     textDecoration: "line-through",
   },
-});
+}));
 
 const TodoListItem = (props) => {
   const classes = useStyles();

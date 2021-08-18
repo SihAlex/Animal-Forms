@@ -1,7 +1,7 @@
 import { Box, Button, CircularProgress } from "@material-ui/core";
 import { useCallback, useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { getMemes } from "../../store/meme-api-actions";
+import { getMemes } from "../../store/redux/meme-api-actions";
 
 const Meme = () => {
   const dispatch = useDispatch();

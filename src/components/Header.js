@@ -1,17 +1,18 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
 
 import { useState } from "react";
 
 import { makeStyles } from "@material-ui/core/styles";
 
 import useWindowDimensions from "../hooks/useWindowDimensions";
+import { useSelector, useDispatch } from "react-redux";
+import { authActions } from "../store/redux/auth";
 
 const useStyles = makeStyles((theme) => ({
   header: {
-    padding: "1.2rem 0",
-    font: "bolder 2.2rem Arial, sans-serif",
-    backgroundColor: "#466D1D",
-    color: "white",
+    padding: "0.5rem 0",
+    font: "bolder 2rem Arial, sans-serif",
+    backgroundColor: theme.palette.primary.main,
   },
   nav: {
     maxWidth: "60%",
@@ -38,11 +39,11 @@ const useStyles = makeStyles((theme) => ({
     },
     "& a": {
       textDecoration: "none",
-      color: "white",
+      color: theme.palette.primary.text,
     },
     "& a:active, a.active, a:hover": {
       textDecoration: "none",
-      color: "lightgreen",
+      color: "#393939",
     },
   },
   closeList: {
@@ -57,13 +58,15 @@ const useStyles = makeStyles((theme) => ({
     padding: 0,
     width: "2rem",
     "&:hover": {
-      color: "lightgreen",
+      color: "black",
     },
   },
 }));
 
 export default function Header() {
   const classes = useStyles();
+  const isLoggedIn = !!useSelector((state) => state.auth.token);
+  const dispatch = useDispatch();
 
   const dimensions = useWindowDimensions();
 
@@ -97,16 +100,20 @@ export default function Header() {
     </div>
   );
 
+  const logoutHandler = () => {
+    dispatch(authActions.logout());
+  };
+
   return (
     <header className={classes.header}>
-      <nav className={classes.nav}>
-        {isOpen && dimensions.width <= 960 ? closeButton : null}
+      {isLoggedIn && (
+        <nav className={classes.nav}>
+          {isOpen && dimensions.width <= 960 ? closeButton : null}
 
-        {!isOpen && dimensions.width <= 960 ? (
-          mobileClosedHeader
-        ) : (
-          <ul>
-            <>
+          {!isOpen && dimensions.width <= 960 ? (
+            mobileClosedHeader
+          ) : (
+            <ul>
               <li>
                 <NavLink to="/main">Main</NavLink>
               </li>
@@ -114,18 +121,20 @@ export default function Header() {
                 <NavLink to="/info">Info</NavLink>
               </li>
               <li>
-                <NavLink to="/meme">?</NavLink>
+                <NavLink to="/meme">Chuckles</NavLink>
               </li>
               <li>
                 <NavLink to="/todo">TODO</NavLink>
               </li>
               <li>
-                <NavLink to="/login">Login</NavLink>
+                <Link onClick={logoutHandler} to="/login">
+                  Logout
+                </Link>
               </li>
-            </>
-          </ul>
-        )}
-      </nav>
+            </ul>
+          )}
+        </nav>
+      )}
     </header>
   );
 }

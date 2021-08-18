@@ -9,7 +9,7 @@ export const getMemes = () => {
       .then(({ title, url }) => {
         dispatch(memeActions.updateMeme({ title, url }));
       })
-      .catch((error) => dispatch(error.message));
+      .catch((error) => dispatch(memeActions.error(error.message)));
   };
 };
 

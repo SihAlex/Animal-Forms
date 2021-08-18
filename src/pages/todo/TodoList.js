@@ -1,5 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
-import { todoActions } from "../../store/todo-list";
+import { todoActions } from "../../store/redux/todo-list";
+import { todoListControlsActions } from "../../store/redux/todo-list-controls";
 
 import { Button, makeStyles, Checkbox, Box } from "@material-ui/core";
 
@@ -7,14 +8,13 @@ import { useState } from "react";
 
 import TodoListItem from "./TodoListItem";
 import TodoEntryForm from "./forms/TodoEntryForm";
-import { todoListControlsActions } from "../../store/todo-list-controls";
 
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import DragHandler from "../../components/DragHandler";
 
 const useStyles = makeStyles({
   todoList: {
-    margin: 0,
+    margin: "0 auto",
     padding: "0 1rem",
     font: "inherit",
     display: "flex",
@@ -22,10 +22,10 @@ const useStyles = makeStyles({
     alignItems: "center",
     "& div.todoListItem": {
       listStyle: "none",
-      borderBottom: "0.2rem solid gray",
       display: "flex",
       alignItems: "center",
       order: 1,
+      borderBottom: "0.2rem solid gray",
       backgroundColor: "white",
     },
   },
@@ -36,6 +36,7 @@ const useStyles = makeStyles({
     "& > *:not(:last-child)": {
       marginRight: "1rem",
     },
+    color: "white",
   },
   pageText: {
     textAlign: "center",
@@ -110,13 +111,26 @@ const TodoList = () => {
         dispatch(todoActions.replaceItem(param));
       }}
     >
-      <ul className={classes.todoList}>
+      <ul
+        className={classes.todoList}
+        style={{
+          backgroundColor: "white",
+          borderRadius: "1rem",
+          padding: "1rem",
+          width: "36rem",
+        }}
+      >
         <Droppable droppableId="todoListDroppable">
           {(provided, snapshot) => (
             <div
               ref={provided.innerRef}
               style={{
-                backgroundColor: snapshot.isDraggingOver ? "#eeffeb" : "white",
+                backgroundColor: snapshot.isDraggingOver
+                  ? "rgba(132, 170, 10, 0.9)"
+                  : "white",
+                border: snapshot.isDraggingOver
+                  ? "1px #84AA0A solid"
+                  : "1px white solid",
               }}
               {...provided.droppableProps}
             >
@@ -135,9 +149,8 @@ const TodoList = () => {
                       className="todoListItem"
                       ref={provided.innerRef}
                       {...provided.draggableProps}
-                      {...provided.dragHandleProps}
                     >
-                      <DragHandler />
+                      <DragHandler dragHandleProps={provided.dragHandleProps} />
                       <TodoListItem
                         key={item.id}
                         item={item}

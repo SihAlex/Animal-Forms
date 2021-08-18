@@ -6,7 +6,7 @@ import Form from "../../../components/FormWrapper";
 
 import validationSchema from "../validation/TodoEntryFormValidation";
 import { useDispatch } from "react-redux";
-import { todoActions } from "../../../store/todo-list";
+import { todoActions } from "../../../store/redux/todo-list";
 
 export default function TodoEntryEditForm(props) {
   const dispatch = useDispatch();

@@ -19,12 +19,15 @@ const useStyles = makeStyles((theme) => ({
   pageText: {
     textAlign: "center",
     fontSize: "2.4rem",
-    color: "white",
+    color: theme.palette.primary.text,
     padding: "2rem",
   },
   container: {
     maxWidth: "40rem",
     padding: 0,
+    backgroundColor: "white",
+    padding: "1rem",
+    borderRadius: "1rem",
   },
   formControl: {
     margin: theme.spacing(1),

@@ -4,12 +4,12 @@ import { useContext } from "react";
 
 import { CovidStatsContext } from "../../store/covid-stasts-context";
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   info: {
     display: "flex",
     justifyContent: "center",
     font: "bolder 2.2rem Arial, sans-serif",
-    backgroundColor: "#466D1D",
+    backgroundColor: theme.palette.primary.main,
     color: "white",
     maxWidth: "60rem",
     margin: "0 auto",
@@ -32,7 +32,7 @@ export default function Info() {
 
   const stats = covStatsCtx ? (
     <ul>
-      <p>Covid statistics</p>
+      <h2>Covid Statistics</h2>
       <li>Country: {covStatsCtx.country}</li>
       <li>Confirmed: {covStatsCtx.confirmed}</li>
       <li>Critical: {covStatsCtx.critical}</li>
