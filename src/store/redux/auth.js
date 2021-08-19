@@ -1,10 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { retrieveStoredToken } from "./auth-actions";
 
 const authSlice = createSlice({
   name: "auth",
   initialState: {
     error: "",
-    token: localStorage.getItem("token") || "",
+    token: retrieveStoredToken() ? retrieveStoredToken().token : "",
+    expires: retrieveStoredToken() ? retrieveStoredToken().expires : "",
   },
   reducers: {
     login(state, action) {
@@ -12,12 +14,14 @@ const authSlice = createSlice({
         state.isLoggedIn = true;
         state.token = action.payload.token;
         localStorage.setItem("token", action.payload.token);
+        localStorage.setItem("expirationTime", action.payload.expires);
         state.error = "";
       }
     },
     logout(state, action) {
       state.token = "";
       localStorage.removeItem("token");
+      localStorage.removeItem("expirationTime");
       state.error = "";
       if (action.payload) {
         clearTimeout(action.payload);
@@ -25,6 +29,9 @@ const authSlice = createSlice({
     },
     setError(state, action) {
       state.error = action.payload;
+    },
+    getExpirationTime(state) {
+      return state.expires;
     },
   },
 });
