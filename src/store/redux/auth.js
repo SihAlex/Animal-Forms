@@ -20,10 +20,11 @@ const authSlice = createSlice({
       }
     },
     logout(state, action) {
-      state.token = "";
       localStorage.removeItem("token");
       localStorage.removeItem("expirationTime");
       localStorage.removeItem("refreshToken");
+      state.token = "";
+      state.expires = "";
       state.error = "";
       if (action.payload) {
         clearTimeout(action.payload);
@@ -35,6 +36,17 @@ const authSlice = createSlice({
 
       localStorage.setItem("expirationTime", action.payload.expires);
       state.expires = action.payload.expires;
+    },
+    checkStoredToken(state, action) {
+      const isValid = action.payload;
+      if (!isValid) {
+        state.token = "";
+        state.expires = "";
+        state.error = "";
+        localStorage.removeItem("token");
+        localStorage.removeItem("expirationTime");
+        localStorage.removeItem("refreshToken");
+      }
     },
     setError(state, action) {
       state.error = action.payload;

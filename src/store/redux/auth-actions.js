@@ -19,30 +19,48 @@ export const retrieveStoredToken = () => {
     localStorage.removeItem("expirationTime");
     localStorage.removeItem("refreshToken");
     return null;
-  } else if (remainingTime <= 600000) {
-    refreshStoredToken();
-    console.log("Refreshed!");
   }
   return { token: storedToken, expires: remainingTime };
+};
+
+const checkStoredToken = () => {
+  const token = localStorage.getItem("token");
+  if (token) {
+    const checkURL = `https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=${process.env.REACT_APP_KEY}`;
+    return (dispatch) => {
+      fetch(checkURL, {
+        method: "GET",
+        body: JSON.stringify({
+          idToken: token,
+        }),
+      }).then((response) => {
+        if (response.ok) {
+          response.json().then((data) => {
+            dispatch(authActions.checkStoredToken(!data[0].disabled));
+          });
+        } else {
+          dispatch(authActions.checkStoredToken(false));
+        }
+      });
+    };
+  }
 };
 
 export const refreshStoredToken = () => {
   let errorMessage = "Authentication failed!";
   let expirationTime = 0;
+  const refreshURL = `https://securetoken.googleapis.com/v1/token?key=${process.env.REACT_APP_KEY}`;
   return (dispatch) => {
-    fetch(
-      `https://securetoken.googleapis.com/v1/token?key=${process.env.REACT_APP_KEY}`,
-      {
-        method: "POST",
-        body: JSON.stringify({
-          grant_type: "refresh_token",
-          refresh_token: localStorage.getItem("refreshToken"),
-        }),
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-      }
-    )
+    fetch(refreshURL, {
+      method: "POST",
+      body: JSON.stringify({
+        grant_type: "refresh_token",
+        refresh_token: localStorage.getItem("refreshToken"),
+      }),
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+    })
       .then((response) => {
         if (response.ok) {
           return response.json().then((data) => {
