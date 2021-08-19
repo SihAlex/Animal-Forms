@@ -17,25 +17,71 @@ export const retrieveStoredToken = () => {
   if (remainingTime <= 60000) {
     localStorage.removeItem("token");
     localStorage.removeItem("expirationTime");
-
+    localStorage.removeItem("refreshToken");
     return null;
+  } else if (remainingTime <= 600000) {
+    refreshStoredToken();
+    console.log("Refreshed!");
   }
-
   return { token: storedToken, expires: remainingTime };
 };
 
 export const refreshStoredToken = () => {
-  
-}
+  let errorMessage = "Authentication failed!";
+  let expirationTime = 0;
+  return (dispatch) => {
+    fetch(
+      `https://securetoken.googleapis.com/v1/token?key=${process.env.REACT_APP_KEY}`,
+      {
+        method: "POST",
+        body: JSON.stringify({
+          grant_type: "refresh_token",
+          refresh_token: localStorage.getItem("refreshToken"),
+        }),
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+      }
+    )
+      .then((response) => {
+        if (response.ok) {
+          return response.json().then((data) => {
+            expirationTime = new Date(
+              new Date().getTime() + +data.expires_in * 1000
+            ).toISOString();
+            dispatch(
+              authActions.refreshStoredToken({
+                token: data.id_token,
+                expires: expirationTime,
+              })
+            );
+            localStorage.setItem("refreshToken", data.refresh_token);
+          });
+        } else {
+          return response.json().then((data) => {
+            if (data && data.error && data.error.message) {
+              errorMessage = data.error.message;
+            }
+            dispatch(authActions.setError(errorMessage));
+          });
+        }
+      })
+      .catch((error) => dispatch(authActions.setError(error.message)));
+  };
+};
 
 export const signUp = (email, password) => {
   const signUpURL = `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${process.env.REACT_APP_KEY}`;
-  signUser(signUpURL, email, password);
+  return (dispatch) => {
+    dispatch(signUser(signUpURL, email, password));
+  };
 };
 
 export const signIn = (email, password) => {
   const signInURL = `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${process.env.REACT_APP_KEY}`;
-  signUser(signInURL, email, password);
+  return (dispatch) => {
+    dispatch(signUser(signInURL, email, password));
+  };
 };
 
 export const signUser = (url, email, password) => {
@@ -63,6 +109,7 @@ export const signUser = (url, email, password) => {
               authActions.login({
                 token: data.idToken,
                 expires: expirationTime,
+                refreshToken: data.refreshToken,
               })
             );
           });
