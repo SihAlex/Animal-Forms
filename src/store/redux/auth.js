@@ -15,10 +15,13 @@ const authSlice = createSlice({
         state.error = "";
       }
     },
-    logout(state) {
+    logout(state, action) {
       state.token = "";
       localStorage.removeItem("token");
       state.error = "";
+      if (action.payload) {
+        clearTimeout(action.payload);
+      }
     },
     setError(state, action) {
       state.error = action.payload;
