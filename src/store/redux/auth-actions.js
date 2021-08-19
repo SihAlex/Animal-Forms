@@ -28,9 +28,7 @@ export const signUp = (email, password) => {
       .then((response) => {
         if (response.ok) {
           return response.json().then((data) => {
-            expirationTime = new Date(
-              new Date().getTime() + +data.expiresIn * 1000
-            ).toISOString();
+            expirationTime = +data.expiresIn * 1000;
             dispatch(
               authActions.login({
                 token: data.idToken,
@@ -47,15 +45,15 @@ export const signUp = (email, password) => {
         }
       })
       .catch((error) => dispatch(authActions.setError(error.message)));
-    setTimeout(
-      dispatch(authActions.logout()),
-      calculateRemainingTime(expirationTime)
-    );
+    const timeout = setTimeout(() => {
+      dispatch(authActions.logout(timeout));
+    }, expirationTime);
   };
 };
 
 export const signIn = (email, password) => {
   let errorMessage = "Authentication failed!";
+  let expirationTime = 0;
   return (dispatch) => {
     fetch(signInURL, {
       method: "POST",
@@ -71,6 +69,7 @@ export const signIn = (email, password) => {
       .then((response) => {
         if (response.ok) {
           return response.json().then((data) => {
+            expirationTime = +data.expiresIn * 1000;
             dispatch(
               authActions.login({
                 token: data.idToken,
@@ -86,6 +85,9 @@ export const signIn = (email, password) => {
           });
         }
       })
-      .catch((error) => dispatch(authActions.setError(error)));
+      .catch((error) => dispatch(authActions.setError(error.message)));
+    const timeout = setTimeout(() => {
+      dispatch(authActions.logout(timeout));
+    }, expirationTime);
   };
 };
