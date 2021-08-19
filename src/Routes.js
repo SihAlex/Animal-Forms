@@ -29,6 +29,20 @@ const ProtectedRoute = (props) => {
   );
 };
 
+const LoginRoute = (props) => {
+  const isLoggedIn = !!useSelector((state) => state.auth.token);
+
+  const { component: Component, ...routeProps } = props;
+  return (
+    <Route
+      {...routeProps}
+      render={(componentProps) =>
+        isLoggedIn ? <Redirect to="/main" /> : <Component {...componentProps} />
+      }
+    />
+  );
+};
+
 const Routes = () => {
   const isLoggedIn = !!useSelector((state) => state.auth.token);
 
@@ -48,9 +62,9 @@ const Routes = () => {
         <ProtectedRoute path="/info" component={Info} />
         <ProtectedRoute path="/meme" component={Meme} />
         <ProtectedRoute path="/todo" component={TodoList} />
-        <Route path="/login" component={Login} />
+        <LoginRoute path="/login" component={Login} />
         <Route path="*">
-          <h1 style={{ color: "white" }}>Page not found</h1>
+          <h1 style={{ color: "white", margin: "1rem" }}>Page not found</h1>
         </Route>
       </Switch>
     </Suspense>

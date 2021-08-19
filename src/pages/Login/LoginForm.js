@@ -8,6 +8,7 @@ import ErrorMsg from "../../components/ErrorMsg";
 
 import { signIn } from "../../store/redux/auth-actions";
 import { useSelector, useDispatch } from "react-redux";
+import { useHistory } from "react-router-dom";
 
 const initialValues = {
   email: "",
@@ -17,9 +18,11 @@ const initialValues = {
 const LoginForm = () => {
   const errorMsg = useSelector((state) => state.auth.error);
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const onSubmit = (values) => {
     dispatch(signIn(values.email, values.password));
+    history.replace("/");
   };
 
   const formik = useFormik({
