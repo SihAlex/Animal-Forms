@@ -2,8 +2,10 @@ import Header from "./components/Header";
 
 import { createTheme, ThemeProvider, Radio } from "@material-ui/core";
 import { CovidStatsContextProvider } from "./store/covid-stasts-context";
-
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { authActions } from "./store/redux/auth";
+import { auth, onAuthStateChange } from "./firebase";
 
 import Routes from "./Routes";
 import Footer from "./components/Footer";
@@ -45,6 +47,21 @@ const lightTheme = createTheme({
 const theme = darkTheme;
 
 function App() {
+  const dispatch = useDispatch();
+
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChange(setIsLoggedIn);
+    return () => {
+      unsubscribe();
+    };
+  }, []);
+
+  useEffect(() => {
+    isLoggedIn && dispatch(authActions.login());
+  }, [isLoggedIn]);
+
   return (
     <ThemeProvider theme={theme}>
       <div

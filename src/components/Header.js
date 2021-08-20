@@ -6,7 +6,7 @@ import { makeStyles } from "@material-ui/core/styles";
 
 import useWindowDimensions from "../hooks/useWindowDimensions";
 import { useSelector, useDispatch } from "react-redux";
-import { authActions } from "../store/redux/auth";
+import { signOut } from "../store/redux/auth-actions";
 
 const useStyles = makeStyles((theme) => ({
   header: {
@@ -65,7 +65,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Header() {
   const classes = useStyles();
-  const isLoggedIn = !!useSelector((state) => state.auth.token);
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
   const dispatch = useDispatch();
 
   const dimensions = useWindowDimensions();
@@ -101,7 +101,7 @@ export default function Header() {
   );
 
   const logoutHandler = () => {
-    dispatch(authActions.logout());
+    dispatch(signOut());
   };
 
   return (

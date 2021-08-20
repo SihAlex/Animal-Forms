@@ -1,4 +1,5 @@
 import React, { Suspense, useEffect } from "react";
+import { auth } from "./firebase";
 
 import { Route, Switch, Redirect, useHistory } from "react-router-dom";
 
@@ -12,7 +13,7 @@ const TodoList = React.lazy(() => import("./pages/todo/TodoList"));
 const Login = React.lazy(() => import("./pages/Login/Login"));
 
 const ProtectedRoute = (props) => {
-  const isLoggedIn = !!useSelector((state) => state.auth.token);
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
 
   const { component: Component, ...routeProps } = props;
   return (
@@ -30,9 +31,10 @@ const ProtectedRoute = (props) => {
 };
 
 const LoginRoute = (props) => {
-  const isLoggedIn = !!useSelector((state) => state.auth.token);
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
 
   const { component: Component, ...routeProps } = props;
+
   return (
     <Route
       {...routeProps}
@@ -44,7 +46,7 @@ const LoginRoute = (props) => {
 };
 
 const Routes = () => {
-  const isLoggedIn = !!useSelector((state) => state.auth.token);
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
 
   return (
     <Suspense
