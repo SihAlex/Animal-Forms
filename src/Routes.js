@@ -46,7 +46,6 @@ const LoginRoute = (props) => {
 
 const Routes = () => {
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
-  const classes = useStyles();
   const location = useLocation();
 
   return (
