@@ -36,7 +36,7 @@ const useStyles = makeStyles({
     "& > *:not(:last-child)": {
       marginRight: "1rem",
     },
-    color: "white",
+    color: "black",
   },
   pageText: {
     textAlign: "center",

@@ -7,7 +7,7 @@ const useWindowDimensions = () => {
       width,
       height,
     };
-  });
+  }, []);
 
   const [windowDimensions, setWindowDimensions] = useState(getWindowDimensions);
 

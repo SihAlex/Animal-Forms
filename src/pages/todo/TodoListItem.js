@@ -32,7 +32,6 @@ const useStyles = makeStyles((theme) => ({
 
 const TodoListItem = (props) => {
   const classes = useStyles();
-
   const { id, title, content, completed } = props.item;
 
   const { showConfirmation } = props;

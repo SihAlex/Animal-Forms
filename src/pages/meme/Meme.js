@@ -12,7 +12,7 @@ const Meme = () => {
     setIsUpdating(true);
     dispatch(getMemes());
     setIsUpdating(false);
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     handleUpdate();

@@ -1,20 +1,21 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { checkSignIn } from "./auth-actions";
 
 const authSlice = createSlice({
   name: "auth",
   initialState: {
-    isLoggedIn: false,
+    isLoggedIn: +localStorage.getItem("isLoggedIn") || false,
     error: "",
   },
   reducers: {
     login(state) {
       state.error = "";
       state.isLoggedIn = true;
+      localStorage.setItem("isLoggedIn", 1);
     },
     logout(state) {
       state.error = "";
       state.isLoggedIn = false;
+      localStorage.setItem("isLoggedIn", 0);
     },
     setError(state, action) {
       state.error = action.payload;

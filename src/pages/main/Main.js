@@ -24,7 +24,6 @@ const useStyles = makeStyles((theme) => ({
   },
   container: {
     maxWidth: "40rem",
-    padding: 0,
     backgroundColor: "white",
     padding: "1rem",
     borderRadius: "1rem",

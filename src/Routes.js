@@ -5,7 +5,7 @@ import { Route, Switch, Redirect, useLocation } from "react-router-dom";
 import { Box, CircularProgress } from "@material-ui/core";
 import { useSelector } from "react-redux";
 
-import { CSSTransition, TransitionGroup } from "react-transition-group";
+import { CSSTransition, SwitchTransition } from "react-transition-group";
 import { makeStyles } from "@material-ui/core";
 
 const Main = React.lazy(() => import("./pages/main/Main"));
@@ -24,10 +24,10 @@ const useStyles = makeStyles((theme) => ({
     transition: "opacity 250ms ease",
   },
   fadeExit: {
-    opacity: 0,
+    display: "none",
   },
   fadeExitActive: {
-    opacity: 0,
+    display: "none",
   },
 }));
 
@@ -76,7 +76,7 @@ const Routes = () => {
         </Box>
       }
     >
-      <TransitionGroup>
+      <SwitchTransition>
         <CSSTransition
           key={location.key}
           timeout={250}
@@ -102,7 +102,7 @@ const Routes = () => {
             </Route>
           </Switch>
         </CSSTransition>
-      </TransitionGroup>
+      </SwitchTransition>
     </Suspense>
   );
 };

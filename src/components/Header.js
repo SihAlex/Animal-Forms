@@ -71,6 +71,12 @@ export default function Header() {
   const dimensions = useWindowDimensions();
 
   const [isOpen, setIsOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState(
+    JSON.parse(localStorage.getItem("tab")) || {
+      name: "Main",
+      link: "/main",
+    }
+  );
 
   const openMenuHandler = () => {
     setIsOpen(true);
@@ -78,6 +84,20 @@ export default function Header() {
 
   const closeMenuHandler = () => {
     setIsOpen(false);
+  };
+
+  const handleNavClick = ({ target }) => {
+    setActiveTab({
+      name: target.text,
+      link: target.href,
+    });
+    localStorage.setItem(
+      "tab",
+      JSON.stringify({
+        name: target.text,
+        link: target.href,
+      })
+    );
   };
 
   const closeButton = (
@@ -91,7 +111,7 @@ export default function Header() {
   const mobileClosedHeader = (
     <div style={{ display: "flex", justifyContent: "space-between" }}>
       <div style={{ width: "2rem" }}></div>
-      <NavLink to="/main">Main</NavLink>
+      <NavLink to="#">{activeTab.name}</NavLink>
       <div>
         <button onClick={openMenuHandler} className={classes.closeList__button}>
           +
@@ -115,16 +135,24 @@ export default function Header() {
           ) : (
             <ul>
               <li>
-                <NavLink to="/main">Main</NavLink>
+                <NavLink onClick={handleNavClick} to="/main">
+                  Main
+                </NavLink>
               </li>
               <li>
-                <NavLink to="/info">Info</NavLink>
+                <NavLink onClick={handleNavClick} to="/info">
+                  Info
+                </NavLink>
               </li>
               <li>
-                <NavLink to="/meme">Chuckles</NavLink>
+                <NavLink onClick={handleNavClick} to="/meme">
+                  Chuckles
+                </NavLink>
               </li>
               <li>
-                <NavLink to="/todo">TODO</NavLink>
+                <NavLink onClick={handleNavClick} to="/todo">
+                  TODO
+                </NavLink>
               </li>
               <li>
                 <Link onClick={logoutHandler} to="/login">
