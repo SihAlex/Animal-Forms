@@ -98,6 +98,7 @@ export default function Header() {
         link: target.href,
       })
     );
+    setIsOpen(false);
   };
 
   const closeButton = (
@@ -122,6 +123,8 @@ export default function Header() {
 
   const logoutHandler = () => {
     dispatch(signOut());
+    localStorage.removeItem("tab");
+    setIsOpen(false);
   };
 
   return (
