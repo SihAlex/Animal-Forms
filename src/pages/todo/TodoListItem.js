@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { makeStyles, Button, Checkbox } from "@material-ui/core";
 import { useDispatch } from "react-redux";
 import { todoActions } from "../../store/redux/todo-list";
@@ -32,13 +32,14 @@ const useStyles = makeStyles((theme) => ({
 
 const TodoListItem = (props) => {
   const classes = useStyles();
+  const dispatch = useDispatch();
+
   const { id, title, content, completed } = props.item;
 
-  const { showConfirmation } = props;
+  const { showConfirmation, onUnmount } = props;
 
   const [check, setCheck] = useState(completed);
   const [editing, setEditing] = useState(false);
-  const dispatch = useDispatch();
 
   const editEntryHandler = () => {
     setEditing(true);
@@ -49,10 +50,12 @@ const TodoListItem = (props) => {
   };
 
   const removeEntryHandler = () => {
-    const confirmation = showConfirmation
-      ? window.confirm("Are you sure you want to delete this entry?")
-      : true;
-    confirmation && dispatch(todoActions.removeItem(id));
+    onUnmount(() => {
+      const confirmation = showConfirmation
+        ? window.confirm("Are you sure you want to delete this entry?")
+        : true;
+      confirmation && dispatch(todoActions.removeItem(id));
+    });
   };
 
   const toggleCompletionHandler = (event) => {

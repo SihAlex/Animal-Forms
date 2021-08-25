@@ -2,15 +2,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { todoActions } from "../../store/redux/todo-list";
 import { todoListControlsActions } from "../../store/redux/todo-list-controls";
 
-import { Button, makeStyles, Checkbox, Box, Fade } from "@material-ui/core";
+import { Button, makeStyles, Checkbox, Box } from "@material-ui/core";
 
 import { useState } from "react";
 
-import TodoListItem from "./TodoListItem";
 import TodoEntryForm from "./forms/TodoEntryForm";
 
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import DragHandler from "../../components/DragHandler";
+import TodoListDraggable from "./TodoListDraggable";
 
 const useStyles = makeStyles({
   todoList: {
@@ -138,31 +137,12 @@ const TodoList = () => {
                 <h2>No entries have been made yet.</h2>
               ) : null}
               {todoList.map((item, index) => (
-                <Draggable
+                <TodoListDraggable
                   key={item.id}
-                  draggableId={"draggable-" + item.id}
+                  item={item}
                   index={index}
-                  isDragDisabled={item.completed}
-                >
-                  {(provided, snapshot) => (
-                    <Fade in={true} timeout={500}>
-                      <div
-                        className="todoListItem"
-                        ref={provided.innerRef}
-                        {...provided.draggableProps}
-                      >
-                        <DragHandler
-                          dragHandleProps={provided.dragHandleProps}
-                        />
-                        <TodoListItem
-                          key={item.id}
-                          item={item}
-                          showConfirmation={showConfirmation}
-                        />
-                      </div>
-                    </Fade>
-                  )}
-                </Draggable>
+                  showConfirmation={showConfirmation}
+                />
               ))}
               {provided.placeholder}
             </div>
