@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { todoActions } from "../../store/redux/todo-list";
 import { todoListControlsActions } from "../../store/redux/todo-list-controls";
 
-import { Button, makeStyles, Checkbox, Box } from "@material-ui/core";
+import { Button, makeStyles, Checkbox, Box, Fade } from "@material-ui/core";
 
 import { useState } from "react";
 
@@ -145,18 +145,22 @@ const TodoList = () => {
                   isDragDisabled={item.completed}
                 >
                   {(provided, snapshot) => (
-                    <div
-                      className="todoListItem"
-                      ref={provided.innerRef}
-                      {...provided.draggableProps}
-                    >
-                      <DragHandler dragHandleProps={provided.dragHandleProps} />
-                      <TodoListItem
-                        key={item.id}
-                        item={item}
-                        showConfirmation={showConfirmation}
-                      />
-                    </div>
+                    <Fade in={true} timeout={500}>
+                      <div
+                        className="todoListItem"
+                        ref={provided.innerRef}
+                        {...provided.draggableProps}
+                      >
+                        <DragHandler
+                          dragHandleProps={provided.dragHandleProps}
+                        />
+                        <TodoListItem
+                          key={item.id}
+                          item={item}
+                          showConfirmation={showConfirmation}
+                        />
+                      </div>
+                    </Fade>
                   )}
                 </Draggable>
               ))}

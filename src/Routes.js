@@ -1,8 +1,8 @@
-import React, { Suspense, useEffect } from "react";
+import React, { Suspense } from "react";
 
 import { Route, Switch, Redirect, useLocation } from "react-router-dom";
 
-import { Box, CircularProgress } from "@material-ui/core";
+import { Box, CircularProgress, Fade } from "@material-ui/core";
 import { useSelector } from "react-redux";
 
 const Main = React.lazy(() => import("./pages/main/Main"));
@@ -57,9 +57,9 @@ const Routes = () => {
       }
     >
       <Switch location={location}>
-        <Route path="/" exact>
-          {isLoggedIn ? <Redirect to="/main" /> : <Redirect to="/login" />}
-        </Route>
+          <Route path="/" exact>
+            {isLoggedIn ? <Redirect to="/main" /> : <Redirect to="/login" />}
+          </Route>
         <ProtectedRoute path="/main" component={Main} />
         <ProtectedRoute path="/info" component={Info} />
         <ProtectedRoute path="/meme" component={Meme} />
