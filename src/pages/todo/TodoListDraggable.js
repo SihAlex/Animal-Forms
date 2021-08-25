@@ -2,20 +2,9 @@ import { Slide } from "@material-ui/core";
 import { Draggable } from "react-beautiful-dnd";
 import TodoListItem from "./TodoListItem";
 import DragHandler from "../../components/DragHandler";
-import { useState } from "react";
 
 const TodoListDraggable = (props) => {
-  const { item, index, showConfirmation } = props;
-
-  const [mount, setMount] = useState(true);
-
-  const unmountHandler = (callback) => {
-    setMount(false);
-    const timeout = setTimeout(() => {
-      callback();
-      return clearTimeout(timeout);
-    }, 200);
-  };
+  const { item, index, showConfirmation, mount, unmountHandler } = props;
 
   return (
     <Draggable

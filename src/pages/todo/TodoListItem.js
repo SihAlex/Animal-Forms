@@ -50,12 +50,14 @@ const TodoListItem = (props) => {
   };
 
   const removeEntryHandler = () => {
-    onUnmount(() => {
-      const confirmation = showConfirmation
-        ? window.confirm("Are you sure you want to delete this entry?")
-        : true;
-      confirmation && dispatch(todoActions.removeItem(id));
-    });
+    const confirmation = showConfirmation
+      ? window.confirm("Are you sure you want to delete this entry?")
+      : true;
+    if (confirmation) {
+      onUnmount(() => {
+        confirmation && dispatch(todoActions.removeItem(id));
+      }, 200);
+    }
   };
 
   const toggleCompletionHandler = (event) => {

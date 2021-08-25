@@ -10,6 +10,7 @@ import TodoEntryForm from "./forms/TodoEntryForm";
 
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import TodoListDraggable from "./TodoListDraggable";
+import useCustomUnmount from "../../hooks/useCustomUnmount";
 
 const useStyles = makeStyles({
   todoList: {
@@ -48,6 +49,10 @@ const useStyles = makeStyles({
 const TodoList = () => {
   const [showAddForm, setShowAddForm] = useState(false);
 
+  const todoList = useSelector((state) => state.todo.todoList);
+
+  const [mount, unmountHandler] = useCustomUnmount();
+
   const todoShowConfirmation = useSelector(
     (state) => state.todoControls.showConfirmation
   );
@@ -56,7 +61,6 @@ const TodoList = () => {
 
   const classes = useStyles();
 
-  const todoList = useSelector((state) => state.todo.todoList);
   const dispatch = useDispatch();
 
   const showFormHandler = () => {
@@ -71,7 +75,12 @@ const TodoList = () => {
     const confirmation = showConfirmation
       ? window.confirm("Are you sure you want to delete completed entries?")
       : true;
-    dispatch(todoActions.removeCompletedItems());
+    todoList.forEach((item) => {
+      item.completed &&
+        unmountHandler(() => {
+          confirmation && dispatch(todoActions.removeItem(item.id));
+        }, 200);
+    });
   };
 
   const toggleConfirmationHandler = (event) => {
@@ -142,6 +151,8 @@ const TodoList = () => {
                   item={item}
                   index={index}
                   showConfirmation={showConfirmation}
+                  mount={mount}
+                  unmountHandler={unmountHandler}
                 />
               ))}
               {provided.placeholder}
