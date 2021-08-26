@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { authActions } from "./store/redux/auth";
 import { onAuthStateChange } from "./firebase";
+import { StyledFirebaseAuth } from "react-firebaseui";
 
 import Routes from "./Routes";
 import Footer from "./components/Footer";
